@@ -1,3 +1,5 @@
+let path = require('path');
+
 module.exports = {
     mode:'development',
     module: {
@@ -16,9 +18,22 @@ module.exports = {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader'],
             },
-        ]
+        ],
+
     },
     resolve: {
         extensions: ['*','.js','.jsx']
+    },
+    devServer: {
+        contentBase: path.join(__dirname, 'dist'),
+        compress: true,
+        port: 9000,
+        proxy: {
+            '/back': {
+                target: 'http://localhost:8080',
+                pathRewrite: {'^/back': '/api'}
+            },
+
+        }
     }
 };
